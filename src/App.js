@@ -1,27 +1,50 @@
 import './App.css';
+import 'firebaseui/dist/firebaseui.css'
+import Signin from './components/Signin';
+import Dashboard from './components/Dashboard';
+import Contact from './components/Contact';
+import { createBrowserRouter, RouterProvider, Outlet, } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import AuthProvider from './Firebase/context';
+
+
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <NavbarWrapper />,
+    children: [
+      {
+        path: '/signin',
+        element: <Signin />
+      },
+      {
+        path: '/dashboard',
+        element: <Dashboard />
+      },
+      {
+        path: '/contact',
+        element: <Contact />
+      }
+    ]
+  }
+])
+
+
+function NavbarWrapper() {
+  return <>
+    <Navbar />
+    <Outlet />
+  </>
+}
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src="Octocat.png" className="App-logo" alt="logo" />
-        <p>
-          GitHub Codespaces <span className="heart">♥️</span> React
-        </p>
-        <p className="small">
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </p>
-      </header>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+
     </div>
   );
 }
